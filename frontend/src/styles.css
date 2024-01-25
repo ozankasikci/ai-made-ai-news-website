@@ -1,0 +1,15 @@
+/* Additional styles specific to news items */
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.flex-row .text-gray-500 {
+    font-size: 0.9rem; /* Adjust the size of the bullet number */
+}
+
+.flex-row a {
+    text-decoration: none;
+    font-weight: bold;
+}

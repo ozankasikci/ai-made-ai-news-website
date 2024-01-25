@@ -1,0 +1,70 @@
+// db.js
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
+
+// Connect to SQLite database
+const dbPath = path.resolve(__dirname, 'data/database.sqlite');
+const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+    if (err) {
+        console.error(err.message);
+    }
+    console.log('Connected to the SQLite database.');
+});
+
+// Function to initialize the database
+const initDb = () => {
+    db.run(`CREATE TABLE IF NOT EXISTS posts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        summary TEXT NOT NULL,
+        content TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )`);
+};
+
+// Function to seed posts
+const seedPosts = () => {
+    const posts = [
+        { title: 'The Future of AI in Healthcare', content: 'Content of Post 1', summary: 'Exploring how AI is revolutionizing medical diagnostics and patient care' },
+        { title: 'AI-Powered Chatbots Transform Customer Support', content: 'Content of Post 1', summary: 'Companies worldwide are adopting AI-powered chatbots to provide 24/7 customer support' },
+    ];
+
+    posts.forEach((post) => {
+        const { title, content, summary } = post;
+        const sql = 'INSERT INTO posts (title, content, summary) VALUES (?, ?, ?)';
+        db.run(sql, [title, content, summary], (err) => {
+            if (err) {
+                return console.error(err.message);
+            }
+            console.log(`Inserted post: ${title}`);
+        });
+    });
+
+    // Close the database connection after all posts are inserted
+    db.close((err) => {
+        if (err) {
+            return console.error(err.message);
+        }
+        console.log('Database connection closed.');
+    });
+};
+
+const getPosts = () => {
+    return new Promise((resolve, reject) => {
+        db.all('SELECT * FROM posts', [], (err, rows) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(rows);
+        });
+    });
+}
+
+// Export functions and the database connection
+module.exports = {
+    db,
+    initDb,
+    seedPosts,
+    getPosts
+};
+

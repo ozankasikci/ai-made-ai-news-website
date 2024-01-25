@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Hubindex</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body class="font-sans bg-gray-100">
+<header class="text-gray-600 body-font">
+    <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+        <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
+                <path d="M21 16V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8m4-12v12m4-12v12m4-12v12"></path>
+            </svg>
+            <span class="ml-3 text-xl">AI News Hub</span>
+        </a>
+        <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+            <a href="#home" class="mr-5 hover:text-gray-900">Home</a>
+            <a href="#about" class="mr-5 hover:text-gray-900">About</a>
+            <a href="#contact" class="mr-5 hover:text-gray-900">Contact</a>
+        </nav>
+    </div>
+</header>
+<main>
+    <section id="post-list" class="text-gray-600 body-font">
+        <div class="container px-5 py-24 mx-auto">
+            <div class="flex flex-col">
+                <!-- News Item 1 -->
+                <div class="flex flex-row items-center border-b-2 border-gray-200 py-3">
+                    <div class="text-gray-500 mr-3">1.</div>
+                    <a href="#" class="text-indigo-500 hover:text-indigo-600">The Future of AI in Healthcare</a>
+                    <span class="mx-2 text-gray-500">-</span>
+                    <p class="text-gray-500">Exploring how AI is revolutionizing medical diagnostics and patient care.</p>
+                </div>
+                <!-- News Item 2 -->
+                <div class="flex flex-row items-center border-b-2 border-gray-200 py-3">
+                    <div class="text-gray-500 mr-3">2.</div>
+                    <a href="#" class="text-indigo-500 hover:text-indigo-600">AI's Impact on Renewable Energy</a>
+                </div>
+                <!-- More news items follow the same pattern -->
+            </div>
+        </div>
+    </section>
+</main>
+<footer class="text-gray-600 body-font">
+    <div class="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
+        <p class="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">© 2024 AI News Hub —
+            <a href="https://twitter.com/#" class="text-gray-600 ml-1" rel="noopener noreferrer" target="_blank">@ai_news_hub</a>
+        </p>
+        <span class="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+                <a href="#" class="text-gray-500">
+                    <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+                        <path d="M18 2H6a2 2 0 0 0-2 2v18l4-4h10a2 2 0 0 0 2-2V4a2 2 0 0 0 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                </a>
+            </span>
+    </div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
