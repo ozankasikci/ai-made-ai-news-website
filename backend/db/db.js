@@ -60,11 +60,26 @@ const getPosts = () => {
     });
 }
 
+function getPostById(id) {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM posts WHERE id = ?';
+
+        db.get(sql, [id], (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(row);
+            }
+        });
+    });
+}
+
 // Export functions and the database connection
 module.exports = {
     db,
     initDb,
     seedPosts,
-    getPosts
+    getPosts,
+    getPostById
 };
 
