@@ -74,12 +74,37 @@ function getPostById(id) {
     });
 }
 
+const addPost = (title, content) => {
+    const checkSql = 'SELECT * FROM posts WHERE title = ?';
+    const insertSql = 'INSERT INTO posts (title, content, summary) VALUES (?, ?, "")';
+
+    // First, check if the post already exists
+    db.get(checkSql, [title], function(err, row) {
+        if (err) {
+            return console.error(err.message);
+        }
+
+        // If the post does not exist, insert it
+        if (!row) {
+            db.run(insertSql, [title, content], function(err) {
+                if (err) {
+                    return console.error(err.message);
+                }
+                console.log(`A new row has been added with rowid ${this.lastID}`);
+            });
+        } else {
+            console.log(`Post with title '${title}' already exists`);
+        }
+    });
+};
+
 // Export functions and the database connection
 module.exports = {
     db,
     initDb,
     seedPosts,
     getPosts,
-    getPostById
+    getPostById,
+    addPost,
 };
 
