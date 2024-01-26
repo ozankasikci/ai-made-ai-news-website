@@ -60,6 +60,17 @@ const getPosts = () => {
     });
 }
 
+const getPostsByPagination = (startIdx, pageSize) => {
+    return new Promise((resolve, reject) => {
+        db.all('SELECT * FROM posts LIMIT ?, ?', [startIdx, pageSize], (err, rows) => {
+            if (err) {
+                reject(err);
+            }
+            resolve(rows);
+        });
+    });
+}
+
 function getPostById(id) {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * FROM posts WHERE id = ?';
@@ -98,6 +109,18 @@ const addPost = (title, content) => {
     });
 };
 
+const getPostCount = () => {
+    return new Promise((resolve, reject) => {
+        db.get('SELECT COUNT(*) AS count FROM posts', [], (err, row) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(row.count);
+            }
+        });
+    });
+};
+
 // Export functions and the database connection
 module.exports = {
     db,
@@ -106,5 +129,7 @@ module.exports = {
     getPosts,
     getPostById,
     addPost,
+    getPostCount,
+    getPostsByPagination,
 };
 

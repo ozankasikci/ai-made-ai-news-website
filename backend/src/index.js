@@ -7,6 +7,7 @@ const app = express();
 // Middleware for parsing JSON and urlencoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, '/../../frontend/static')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/../../frontend/src', 'views'));
 
