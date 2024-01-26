@@ -97,5 +97,73 @@
         loginModal.style.display = 'block';
     });
 </script>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const username = this.querySelector('input[type="text"]').value;
+        const password = this.querySelector('input[type="password"]').value;
+
+        fetch('/auth/login', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        })
+        .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Handle login success
+                    console.log('Logged in:', data);
+                    loginModal.style.display = 'none';
+                    // You might want to redirect or refresh the page
+                } else {
+                    // Handle login failure
+                    console.error('Login failed:', data.message);
+                    // Show error to user
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    // Add Event Listener for Create Account Form Submission
+    document.getElementById('createAccountForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const username = this.querySelector('input[type="text"]').value;
+        const password = this.querySelector('input[type="password"]').value;
+        const confirmPassword = this.querySelectorAll('input[type="password"]')[1].value;
+
+        if (password !== confirmPassword) {
+            console.error('Passwords do not match');
+            // Show error to user
+            return;
+        }
+
+        fetch('/auth/create-account', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Handle account creation success
+                    console.log('Account created:', data);
+                    createAccountModal.style.display = 'none';
+                    // You might want to redirect or log in the user directly
+                } else {
+                    // Handle account creation failure
+                    console.error('Account creation failed:', data.message);
+                    // Show error to user
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
 </body>
 </html>
