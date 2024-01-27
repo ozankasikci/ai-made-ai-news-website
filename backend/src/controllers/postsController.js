@@ -1,5 +1,5 @@
-const PostModel = require('../models/PostModel');
-const CommentModel = require('../models/CommentModel');
+const PostModel = require('../models/postModel');
+const CommentModel = require('../models/commentModel');
 const moment = require('moment');
 
 const postsController = {

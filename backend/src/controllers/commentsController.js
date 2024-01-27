@@ -1,5 +1,5 @@
 // commentsController.js
-const CommentModel = require('../models/CommentModel'); // Adjust the path according to your project structure
+const CommentModel = require('../models/commentModel'); // Adjust the path according to your project structure
 
 const commentsController = {
     addComment: async (req, res) => {
