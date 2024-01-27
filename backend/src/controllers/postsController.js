@@ -1,5 +1,6 @@
 const PostModel = require('../models/PostModel');
 const CommentModel = require('../models/CommentModel');
+const moment = require('moment');
 
 const postsController = {
     getPostById: async (req, res) => {
@@ -40,7 +41,8 @@ const postsController = {
             const formattedPosts = posts.map((row) => {
                 const urlParts = row.content.split('/');
                 const base_url = urlParts[0] + '//' + urlParts[2];
-                return { ...row, base_url };
+                const timeAgo = moment(row.created_at).fromNow();
+                return { ...row, base_url, timeAgo };
             });
 
             const data = {

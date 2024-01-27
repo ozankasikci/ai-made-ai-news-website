@@ -10,8 +10,8 @@
 <body class="font-sans bg-gray-100">
 <header class="text-gray-600 body-font">
     <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-        <!-- Logo and Title -->
-        <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0 space-x-8">
+        <!-- Logo and Title, now clickable and routes to home page -->
+        <a href="/" class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0 space-x-8">
             <!-- Logo SVG -->
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
                 <path d="M21 16V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8m4-12v12m4-12v12m4-12v12"></path>
@@ -256,7 +256,7 @@
                 })
                 .catch(error => console.error('Error:', error));
         });
-    });    
+    });
     
 </script>
 </body>

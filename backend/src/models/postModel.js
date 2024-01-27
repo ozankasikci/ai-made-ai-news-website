@@ -33,11 +33,20 @@ class PostModel {
 
     static async getPostsByPagination(startIdx, pageSize) {
         return new Promise((resolve, reject) => {
-            // Adjust this SQL query to include an ORDER BY clause
-            const sql = 'SELECT * FROM posts ORDER BY created_at DESC LIMIT ?, ?';
+            // Include a subquery to count comments for each post
+            const sql = `
+                SELECT posts.*, 
+                       (SELECT COUNT(*) FROM comments WHERE comments.post_id = posts.id) AS commentCount
+                FROM posts
+                ORDER BY created_at DESC
+                LIMIT ?, ?`;
+
             db.all(sql, [startIdx, pageSize], (err, rows) => {
-                if (err) reject(err);
-                else resolve(rows);
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
             });
         });
     }

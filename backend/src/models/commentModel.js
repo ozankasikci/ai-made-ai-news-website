@@ -34,8 +34,7 @@ class CommentModel {
                 else resolve(this.changes); // this.changes indicates how many rows were affected
             });
         });
-    }    
-    
+    }
 }
 
 module.exports = CommentModel;

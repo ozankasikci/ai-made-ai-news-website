@@ -1,17 +1,24 @@
 <%- include('partials/header') %>
 <main>
     <section id="post-list" class="text-gray-600 body-font">
-        <div class="container px-5 py-16 mx-auto">
+        <div class="container px-5 py-12 mx-auto">
             <% posts.forEach((post, index) => { %>
                 <div class="flex flex-wrap flex-col">
                     <!-- News Item -->
-                    <div class="flex flex-wrap items-center border-b-2 border-gray-200 py-3">
+                    <div class="flex flex-wrap items-center border-gray-200 py-2">
                         <div class="text-gray-500 mr-3"><%= pageIndex * pageSize + index + 1 %>.</div>
-                        <!-- Apply font-semibold or font-bold here -->
                         <a href="/posts/<%= post.id %>" class="font-semibold text-indigo-500 hover:text-indigo-600"><%= post.title %></a>
                         <span class="whitespace-nowrap mx-2 text-gray-500">- (<span class="text-sm">
                             <a href="<%= post.content %>" target="_blank"><%= post.base_url %></a>
                         </span>)</span>
+                    </div>
+                    <div class="flex items-center border-b-2 border-gray-200 py-0">
+                        <span class="text-gray-400 text-xs">
+                            <%= post.timeAgo %>
+                            <% if (post.commentCount !== undefined) { %>
+                                | <%= post.commentCount %> comments
+                            <% } %>
+                        </span>
                     </div>
                 </div>
             <% }) %>
