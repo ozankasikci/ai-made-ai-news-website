@@ -27,6 +27,16 @@ const initDb = () => {
             username TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL
         )`);
+
+        db.run(`CREATE TABLE IF NOT EXISTS comments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            post_id INTEGER NOT NULL,
+            user_id INTEGER,
+            text TEXT NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (post_id) REFERENCES posts(id),
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )`);
     });
 };
 
@@ -57,42 +67,6 @@ const seedPosts = () => {
     });
 };
 
-const getPosts = () => {
-    return new Promise((resolve, reject) => {
-        db.all('SELECT * FROM posts', [], (err, rows) => {
-            if (err) {
-                reject(err);
-            }
-            resolve(rows);
-        });
-    });
-}
-
-const getPostsByPagination = (startIdx, pageSize) => {
-    return new Promise((resolve, reject) => {
-        db.all('SELECT * FROM posts LIMIT ?, ?', [startIdx, pageSize], (err, rows) => {
-            if (err) {
-                reject(err);
-            }
-            resolve(rows);
-        });
-    });
-}
-
-function getPostById(id) {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM posts WHERE id = ?';
-
-        db.get(sql, [id], (err, row) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(row);
-            }
-        });
-    });
-}
-
 const addPost = (title, content) => {
     const checkSql = 'SELECT * FROM posts WHERE title = ?';
     const insertSql = 'INSERT INTO posts (title, content, summary) VALUES (?, ?, "")';
@@ -117,27 +91,11 @@ const addPost = (title, content) => {
     });
 };
 
-const getPostCount = () => {
-    return new Promise((resolve, reject) => {
-        db.get('SELECT COUNT(*) AS count FROM posts', [], (err, row) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(row.count);
-            }
-        });
-    });
-};
-
 // Export functions and the database connection
 module.exports = {
     db,
     initDb,
     seedPosts,
-    getPosts,
-    getPostById,
     addPost,
-    getPostCount,
-    getPostsByPagination,
 };
 

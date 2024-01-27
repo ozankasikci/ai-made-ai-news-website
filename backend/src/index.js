@@ -1,9 +1,20 @@
 const express = require('express');
 const postsRoutes = require('./routes/postsRoutes');
 const authRoutes = require('./routes/authRoutes');
+const commentsRoutes = require('./routes/commentsRoutes'); // Update the path as per your project structure
 const config = require('./config');
 const path = require('path');
 const app = express();
+const session = require('express-session');
+const SQLiteStore = require('connect-sqlite3')(session);
+
+app.use(session({
+    store: new SQLiteStore({ db: 'session.sqlite' }), // Update the path as needed
+    secret: 'your secret key', // Use a secure, unique secret key
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: 'auto' }
+}));
 
 // Middleware for parsing JSON and urlencoded data
 app.use(express.json());
@@ -15,6 +26,9 @@ app.set('views', path.join(__dirname, '/../../frontend/src', 'views'));
 // Initialize routes
 app.use('/auth', authRoutes); // Prefix all auth routes with /auth
 app.use(postsRoutes);
+app.use('/', commentsRoutes);
+
+
 
 // Start server
 app.listen(config.port, () => {
