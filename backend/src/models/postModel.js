@@ -33,18 +33,15 @@ class PostModel {
 
     static async getPostsByPagination(startIdx, pageSize) {
         return new Promise((resolve, reject) => {
-            const sql = 'SELECT * FROM posts LIMIT ?, ?';
+            // Adjust this SQL query to include an ORDER BY clause
+            const sql = 'SELECT * FROM posts ORDER BY created_at DESC LIMIT ?, ?';
             db.all(sql, [startIdx, pageSize], (err, rows) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(rows);
-                }
+                if (err) reject(err);
+                else resolve(rows);
             });
         });
     }
 
-    // Add other methods as needed...
 }
 
 module.exports = PostModel;

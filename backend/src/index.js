@@ -1,7 +1,8 @@
 const express = require('express');
 const postsRoutes = require('./routes/postsRoutes');
 const authRoutes = require('./routes/authRoutes');
-const commentsRoutes = require('./routes/commentsRoutes'); // Update the path as per your project structure
+const commentsRoutes = require('./routes/commentsRoutes'); 
+const newsletterRoutes = require('./routes/newsletterRoutes');
 const config = require('./config');
 const path = require('path');
 const app = express();
@@ -27,6 +28,7 @@ app.set('views', path.join(__dirname, '/../../frontend/src', 'views'));
 app.use('/auth', authRoutes); // Prefix all auth routes with /auth
 app.use(postsRoutes);
 app.use('/', commentsRoutes);
+app.use('/newsletter', newsletterRoutes);
 
 
 

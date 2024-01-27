@@ -11,13 +11,22 @@
 <header class="text-gray-600 body-font">
     <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
         <!-- Logo and Title -->
-        <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+        <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0 space-x-8">
             <!-- Logo SVG -->
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
                 <path d="M21 16V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8m4-12v12m4-12v12m4-12v12"></path>
             </svg>
             <span class="ml-3 text-xl"><%= pageTitle %></span>
         </a>
+
+        <!-- Newsletter Signup Form -->
+        <div class="newsletter-signup flex items-center ml-16">
+            <input type="email" id="newsletterEmail" name="email" placeholder="Join our Newsletter" class="px-4 py-2 w-full border border-gray-300 rounded-l-lg focus:outline-none focus:border-indigo-500 transition-colors">
+            <button id="newsletterJoinBtn" class="px-6 py-2 bg-indigo-500 text-white rounded-r-lg font-semibold hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-colors">
+                Join
+            </button>
+        </div>        
+        
         <!-- Navigation -->
         <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
             <div id="loginSection" class="<%= sessionData.loggedIn ? 'hidden' : 'block' %> mr-5">
@@ -30,6 +39,7 @@
                 </div>
             </div>
         </nav>
+        
     <div>
 </header>
 
@@ -120,7 +130,6 @@
         }
     });
 
-
     logoutLink.addEventListener('click', function(event) {
         event.preventDefault();
         fetch('/auth/logout')
@@ -129,6 +138,12 @@
                 if (data.success) {
                     userSection.style.display = 'none';
                     loginSection.style.display = 'block';
+
+                    // Disable comment form and update placeholder
+                    const commentForm = document.getElementById('comment-form');
+                    commentForm.querySelector('textarea[name="comment"]').placeholder = "Please login to leave a comment";
+                    commentForm.querySelector('textarea[name="comment"]').disabled = true;
+                    commentForm.querySelector('button[type="submit"]').disabled = true;
                 } else {
                     console.error('Logout failed:', data.message);
                 }
@@ -153,6 +168,7 @@
                     loginSection.style.display = 'none';
                     userSection.style.display = 'block';
                     userButton.textContent = `${username} \u25BC`;
+                    window.location.reload(); // Refresh the page
                 } else {
                     alert('Login failed. Please try again.');
                 }
@@ -187,6 +203,61 @@
             })
             .catch(error => console.error('Error:', error));
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const textarea = document.getElementById('comment-textarea');
+        const form = document.getElementById('comment-form');
+
+        if (!textarea || !form) {
+            console.error('Textarea or form not found');
+            return;
+        }
+
+        textarea.addEventListener('keydown', function(event) {
+            // Log the event for debugging
+            console.log(`Key: ${event.key}, Ctrl: ${event.ctrlKey}, Meta: ${event.metaKey}`);
+
+            if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+                event.preventDefault(); // Prevent the default action to avoid newline in textarea
+                form.submit(); // Submit the form
+                console.log('Form submitted');
+            }
+        });
+    });
+
+    // Ensure DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        const newsletterJoinBtn = document.getElementById('newsletterJoinBtn');
+        const newsletterEmail = document.getElementById('newsletterEmail');
+
+        newsletterJoinBtn.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const emailValue = newsletterEmail.value;
+
+            // AJAX request to the server
+            fetch('/newsletter/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: emailValue })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // If subscription is successful, show a popup
+                        alert('Subscription successful! Thank you for joining our newsletter.');
+                        newsletterEmail.value = ''; // Clear the input field
+                    } else {
+                        // Handle any errors, such as validation errors
+                        alert(data.message || 'An error occurred. Please try again.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });    
+    
 </script>
 </body>
 </html>

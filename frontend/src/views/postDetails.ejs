@@ -2,30 +2,41 @@
 
 <main>
     <section class="text-gray-600 body-font">
-        <div class="container px-5 py-24 mx-auto">
+        <div class="container px-5 py-10 mx-auto">
             <div class="mb-10">
                 <a href="/" class="text-indigo-500 hover:text-indigo-600">← Back to home</a>
             </div>
             <div class="bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
                 <h1 class="text-3xl mb-6 text-gray-900 font-bold"><%= post.title %></h1>
-                <p class="text-base text-blue-700">Link: <a href="<%= post.content %>" target="_blank"><%= post.content %></a></p>
+                <p class="text-base text-blue-700"><a href="<%= post.content %>" target="_blank"><%= post.content %></a></p>
             </div>
         </div>
     </section>
 
-    <section id="comments-section" class="container mx-auto px-5 py-8">
+    <section id="comments-section" class="container mx-auto px-5 py-6">
         <h3 class="text-xl font-semibold mb-4">Comments</h3>
         <div id="comments-list" class="space-y-4">
             <% post.comments.forEach(comment => { %>
-                <div class="p-4 bg-white rounded shadow">
-                    <p class="text-gray-800"><%= comment.author %>: <%= comment.text %></p>
+                <div class="p-4 bg-white rounded shadow flex justify-between items-start">
+                    <% if (!comment.deleted) { %>
+                        <p class="text-gray-800 flex-grow"><%= comment.username %>: <%= comment.text %></p>
+                        <% if (sessionData.loggedIn && sessionData.userId === comment.userId) { %>
+                            <form action="/posts/<%= post.id %>/comments/<%= comment.id %>/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
+                                <button type="submit" class="text-red-500 hover:text-red-600 text-sm">Delete</button>
+                            </form>
+                        <% } %>
+                    <% } else { %>
+                        <!-- Adjusted styling for deleted comments -->
+                        <p class="text-gray-400 flex-grow italic text-sm">Deleted by the author</p>
+                    <% } %>
                 </div>
             <% }); %>
-        </div>
-
-        <form id="comment-form" action="/add-comment" method="post" class="mt-6">
-            <textarea name="comment" class="w-full p-2 border border-gray-300 rounded" placeholder="Add a comment..."></textarea>
-            <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded mt-3">Submit Comment</button>
+        </div>        
+        
+        <form id="comment-form" class="mt-6" action="/posts/<%= post.id %>/comments" method="POST">
+            <textarea name="text" id="comment-textarea" class="w-full p-2 border border-gray-300 rounded" placeholder="<%= sessionData.loggedIn ? 'Add a comment...' : 'Please login to leave a comment' %>" <%= sessionData.loggedIn ? '' : 'disabled' %>></textarea>
+            <input type="hidden" name="userId" value="<%= sessionData.userId %>">
+            <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded mt-3" <%= sessionData.loggedIn ? '' : 'disabled' %>>Submit Comment</button>
         </form>
     </section>
 </main>

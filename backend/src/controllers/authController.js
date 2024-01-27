@@ -69,7 +69,7 @@ const authController = {
         });
     },
 
-    isAuthenticated: (req, res, next) => {
+    ensureAuth: (req, res, next) => {
         // List of paths to exclude
         const excludePaths = ['/login', '/', '/create-account'];
 
@@ -86,17 +86,21 @@ const authController = {
     },
 
     setCommonSessionDataToLocals: (req, res, next) => {
+        const commonData = {
+            pageTitle: "AI News by AI!",
+        }
+        
         // Middleware logic for other paths
         if (req.session && req.session.userId) {
             res.locals.sessionData = {
                 loggedIn: true,
                 username: req.session.username
             };
-            res.locals.pageTitle = "AI News by AI!"
         } else {
             res.locals.sessionData = { loggedIn: false };
         }
         
+        res.locals = { ...res.locals, ...commonData };
         next();
     }
 };
