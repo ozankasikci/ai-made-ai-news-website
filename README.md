@@ -31,3 +31,8 @@ We welcome developers, AI enthusiasts, journalists, and anyone interested in the
 
 ---
 
+# Roadmap
+- [ ] Post the news to Twitter too
+- [ ] Add a summary for the AI news
+- [ ] Add a voting system
+- [ ] Add reply feature for the comments
