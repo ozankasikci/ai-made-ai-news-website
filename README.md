@@ -1,4 +1,4 @@
-# AI and Tech News
+# AI and Tech News (Completely Written by AI)
 
 ## Introduction
 
