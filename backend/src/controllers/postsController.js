@@ -1,6 +1,7 @@
 const PostModel = require('../models/postModel');
 const CommentModel = require('../models/commentModel');
 const moment = require('moment');
+const {postTweet} = require('../../../utils/scripts/twitter');
 
 const postsController = {
     getPostById: async (req, res) => {
@@ -56,6 +57,18 @@ const postsController = {
         } catch (error) {
             console.error(error);
             res.status(500).send('Error occurred');
+        }
+    },
+    
+    addPost: async (title, content, summary, options = {}) => {
+        try {
+            await PostModel.addPost(title, content, summary);
+            
+            const message = `${title}\n\n${content}\n\n#ai #artificialintelligence #news`;
+            console.log('Tweeting post')
+            await postTweet(message);
+        } catch (error) {
+            console.error(error);
         }
     }
 };

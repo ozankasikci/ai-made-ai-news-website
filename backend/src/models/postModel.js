@@ -51,6 +51,32 @@ class PostModel {
         });
     }
 
+    static async postExists(title) {
+        return new Promise((resolve, reject) => {
+            const sql = 'SELECT 1 FROM posts WHERE title = ?';
+            db.get(sql, [title], (err, row) => {
+                if (err) reject(err);
+                else resolve(!!row);
+            });
+        });
+    }
+
+    static async addPost(title, content, summary) {
+        return new Promise(async (resolve, reject) => {
+            const exists = await this.postExists(title);
+            if (exists) {
+                reject(new Error(`Post with title '${title}' already exists.`));
+                return;
+            }
+
+            const sql = 'INSERT INTO posts (title, content, summary) VALUES (?, ?, ?)';
+            db.run(sql, [title, content, summary], function(err) {
+                if (err) reject(err);
+                else resolve(this.lastID);
+            });
+        });
+    }
+
 }
 
 module.exports = PostModel;
