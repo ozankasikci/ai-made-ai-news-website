@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "dev": "NODE_ENV=dev backend/node_modules/nodemon/bin/nodemon.js backend/src/index.js",
+    "fetchNews": "NODE_ENV=dev node backend/src/scripts/fetchNews.js"
+  }
+}
