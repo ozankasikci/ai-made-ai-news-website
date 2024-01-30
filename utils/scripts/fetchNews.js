@@ -24,7 +24,7 @@ const fetchHackerNews = () => {
 
     axios.get(URL)
         .then(response => {
-            const topStoriesIds = response.data.slice(0, 200); // Limit to top 30 stories for simplicity
+            const topStoriesIds = response.data.slice(0, 100); // Limit to top 30 stories for simplicity
             const storyPromises = topStoriesIds.map(id => 
                 axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json`));
 
