@@ -1,4 +1,4 @@
-const { db, addPost } = require('../../backend/db/db'); // Update the path as per your project structure
+const postController = require('../../backend/src/controllers/postsController');
 
 const RSSParser = require('rss-parser');
 const axios = require('axios');
@@ -12,7 +12,7 @@ const fetchLobstersAiNews = async () => {
     const feed = await rssParser.parseURL(LOBSTERS_AI_RSS_URL);
     feed.items.forEach(item => {
       // Assuming addPost takes a title, content (which will be the link here), and summary
-      addPost(item.title, item.link, item.contentSnippet);
+      postController.addPost(item.title, item.link, item.contentSnippet);
     });
   } catch (error) {
     console.error('Error fetching AI news from lobste.rs:', error);
@@ -38,7 +38,7 @@ const fetchHackerNews = () => {
                 const isAiRelated = aiKeywords.some(keyword => title.includes(keyword));
 
                 if (isAiRelated) {
-                    addPost(title, url); // Assuming addPost takes a title and a URL/content
+                    postController.addPost(title, url, ""); // Assuming addPost takes a title and a URL/content
                 }
             });
         })
