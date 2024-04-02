@@ -29,9 +29,9 @@ const postsController = {
 
         try {
             const totalPosts = await PostModel.getPostCount();
-            const totalPages = Math.ceil(totalPosts / pageSize);
+            const maxPages = Math.min(Math.ceil(totalPosts / pageSize), 100); // Limit to 100 pages
 
-            if (pageIndex < 0 || pageIndex >= totalPages) {
+            if (pageIndex < 0 || pageIndex >= maxPages) {
                 return res.status(404).send('Page not found');
             }
 
@@ -50,7 +50,7 @@ const postsController = {
                 posts: formattedPosts,
                 pageIndex,
                 pageSize,
-                totalPages,
+                totalPages: maxPages, // Use the limited number of pages
             };
 
             res.render('home', data);
@@ -58,7 +58,7 @@ const postsController = {
             console.error(error);
             res.status(500).send('Error occurred');
         }
-    },
+    },    
     
     addPost: async (title, content, summary, options = {}) => {
         try {

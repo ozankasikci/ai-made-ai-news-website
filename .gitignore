@@ -2,5 +2,9 @@
 .env
 .DS_Store
 node_modules
+utils/node_modules
+backend/node_modules
+frontend/node_modules
 *.sqlite
+utils/*.sqlite
 
